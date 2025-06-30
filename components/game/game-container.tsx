@@ -17,20 +17,13 @@ import DebugPanel from "./ui/debug-panel"
 import FPSCounter from "./ui/fps-counter"
 import SoundManager from "@/lib/sound-manager"
 import AudioGenerator from "./audio/audio-generator"
-import { GameProvider } from "@/lib/game-context"
-import { SettingsProvider, useSettings } from "@/lib/settings-context"
-import { GameStateProvider, useGameState } from "@/lib/game-state-context"
-import { ToolbarProvider } from "@/lib/toolbar-context"
-import { InventoryProvider, useInventory } from "@/lib/inventory-context"
-import { CraftingProvider } from "@/lib/crafting-context"
-import { PlayerStatusProvider, usePlayerStatus } from "@/lib/player-status-context"
-import { NotificationProvider } from "@/lib/notification-context"
-import { CampfireProvider, useCampfire } from "@/lib/campfire-context"
+import { useSettings } from "@/lib/settings-context"
+import { useGameState } from "@/lib/game-state-context"
+import { useInventory } from "@/lib/inventory-context"
+import { usePlayerStatus } from "@/lib/player-status-context"
+import { useCampfire } from "@/lib/campfire-context"
 import { useNotifications } from "@/lib/notification-context"
-import { StorageBoxProvider } from "@/lib/storage-box-context"
 import StorageBoxInventory from "./ui/storage-box-inventory"
-import { InteractionProvider } from "@/lib/interaction-context"
-import { ItemManagerProvider } from "@/lib/item-manager-context"
 
 // Initialize sound manager early - but only in browser
 const soundManager = typeof window !== "undefined" ? SoundManager.getInstance() : null
@@ -39,7 +32,7 @@ if (typeof window !== "undefined" && soundManager) {
   soundManager.warmup()
 }
 
-function GameContainerInner() {
+export default function GameContainer() {
   const [isLoading, setIsLoading] = useState(true)
   const [isLocked, setIsLocked] = useState(false)
   const [showDebug, setShowDebug] = useState(false)
@@ -746,33 +739,3 @@ function GameContainerInner() {
   )
 }
 
-export default function GameContainer() {
-  return (
-    <SettingsProvider>
-      <GameStateProvider>
-        <GameProvider>
-          <PlayerStatusProvider>
-            <NotificationProvider>
-              <ToolbarProvider>
-                <InventoryProvider>
-                  <CampfireProvider>
-                    <StorageBoxProvider>
-                      <CraftingProvider>
-                        <ItemManagerProvider>
-                          <InteractionProvider>
-                            <GameContainerInner />
-                            <NotificationContainer />
-                          </InteractionProvider>
-                        </ItemManagerProvider>
-                      </CraftingProvider>
-                    </StorageBoxProvider>
-                  </CampfireProvider>
-                </InventoryProvider>
-              </ToolbarProvider>
-            </NotificationProvider>
-          </PlayerStatusProvider>
-        </GameProvider>
-      </GameStateProvider>
-    </SettingsProvider>
-  )
-}
